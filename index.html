@@ -1,3 +1,16 @@
+<!--As mudanças realizadas foram:
+- Adicionado a api para buscar cep na area de cadastro,
+porém tem um dos campos que a busca não aparece e não
+sei como resolver, descobri que se limpar o formulario 
+aparece. Usando função + estruturas de decisão;
+- Adicionado um botao de trocar tema no home, com foreach + 
+alteração no CSS do codigo, apenasnessa pagina pois ia dar 
+muito comflito com o css e teria que refazer do zero o projeto.
+- Acredito que dava pra fazer um trabalho realmente mais completo
+e mais organizado, porém eu já fiz a parte em grupo sozinho 
+e acabei nao tendo muito tempo para fazer!
+-->
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -8,37 +21,100 @@
     <title>Trabalho web</title>
 </head>
 <body>
-    <header>
-    </header>
     <main>
         <section>
-        <h1>Cadastro de Usuário</h1>
-        <nav>
-            <a href="./index.html">Cadastro</a> |
-            <a href="./home.html">Home</a> |
-            <a href="./relatorio.html">Relatórios</a> |
-            <a href="./produtos.html">Produtos</a> 
-        </nav>
-        <p>Preencha o formulário</p>
-        <form>
-            <label for="nome">Nome:</label>
-            <input type="text" name="nome" id="nome">
-            <label for="email">Email:</label>
-            <input type="email" name="email" id="email">
-            <label for="senha">Senha:</label>
-            <input type="password" name="senha" id="senha">
-            <label for="confSenha">Confirmar Senha:</label>
-            <input type="password" name="confSenha" id="confSenha">
-            <label for="cidade">Cidade:</label>
-            <input type="text" name="cidade" id="cidade">
-            <label for="tel">Telefone:</label>
-            <input type="text" name="tel" id="tel">
-            <div class="botoes">
-                <button type="reset" class="laranja">Limpar</button>
-                <button type="submit" class="azul">Cadastrar</button>
-            </div>
-        </form>
-    </section>
+            <section>
+            <nav>
+                <a href="./index.html">Cadastro</a> |
+                <a href="./home.html">Home</a> |
+                <a href="./relatorio.html">Relatórios</a> |
+                <a href="./produtos.html">Produtos</a> 
+            </nav>
+            <p>Preencha o formulário</p>
+            <form>
+                <label for="Nome">Nome: </label>
+                <input type="text" name="nome" id="nome"><br>
+                <label for="cep">CEP: </label>
+                <input type="text" name="cep" id="cep" maxlength="9" onblur="buscaCep(this.value)"><br>
+                <label for="rua">Rua: </label>
+                <input type="text" name="rua" id="rua"><br>
+                <label for="bairro">Bairro: </label>
+                <input type="text" name="bairro" id="bairro"><br>
+                <label for="cidade">Cidade: </label>
+                <input type="text" name="cidade" id="cidade"><br>
+                <label for="uf">Estado: </label>
+                <input type="text" name="uf" id="uf"><br>
+                <label for="senha">Senha:</label>
+                <input type="password" name="senha" id="senha">
+                <label for="confSenha">Confirmar Senha:</label>
+                <input type="password" name="confSenha" id="confSenha">
+                <div class="botoes">
+                    <button type="reset" class="laranja">Limpar</button>
+                    <button type="submit" class="azul">Cadastrar</button>
+                </div>
+            </form>
+        </section>
     </main>
+    <script>
+        const form = document.querySelector("form");
+        const cep = document.getElementById("cep");
+        const rua = document.getElementById("rua");
+        const bairro = document.getElementById("bairro");
+        const cidade = document.getElementById("cidade");
+        const uf = document.getElementById("uf");
+
+        function buscaCep(valor){
+            msgErro = document.getElementById("msgErro");
+            if(msgErro){
+                cep.parentNode.removeChild("msgErro");
+            }
+
+            var cepValido = valor.replace(/\D/g, "");
+
+            if(cepValido != ""){
+                var padraoCep = /^[0-9]{8}$/;
+
+                if(padraoCep.test(cepValido)){
+                    rua.value = "Buscando...";
+                    bairro.value = "Buscando...";
+                    cidade.value = "Buscando...";
+                    uf.value = "Buscando...";
+
+                    var script = document.createElement("script");
+
+                    script.src = "https://viacep.com.br/ws/" + cepValido + "/json/?callback=retorno";
+
+                    document.body.appendChild(script);
+                }else{
+                    erro("Inválido!");
+                }
+            }else{
+                erro("Digite corretamente!");
+            }
+        }
+
+        function retorno(resposta){
+            if(!("erro" in resposta)){
+                cep.value = resposta.cep;
+                rua.value = resposta.logradouro;
+                bairro.value = resposta.bairro;
+                cidade.setAttribute("value",resposta.localidade);
+                uf.value = resposta.uf;
+            }else{
+                erro("Não Localizado");
+            }
+        }
+
+        function erro(msg){
+            var erro = document.createElement("label");
+            erro.innerText = " *Cep: " + cep.value + " - " + msg;
+            erro.style.color = "red";
+            erro.style.fontWeight = "bold";
+            erro.id = "msgErro";
+            cep.parentNode.insertBefore(erro, cep.nextSibling);
+            form.reset();
+        }
+
+    </script>
 </body>
 </html>
