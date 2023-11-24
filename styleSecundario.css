@@ -43,15 +43,19 @@ button[type="reset"]:hover{
 
 .grid-container {
     display: grid;
-    grid-template-columns: auto auto auto; /* Três colunas com largura automática */
-    grid-gap: 10px; /* Espaçamento entre as células da grid */
-    padding: 20px; /* Espaçamento interno da grid container */
+    grid-template-columns: auto auto auto;
+    grid-gap: 10px;
+    padding: 20px;
 }
 
 .grid-item {
-    background-color: #ffffff; /* Cor de fundo das células */
-    color: white; /* Cor do texto dentro das células */
-    text-align: center; /* Alinhamento do texto no centro das células */
-    padding: 20px; /* Espaçamento interno das células */
-    font-size: 18px; /* Tamanho do texto dentro das células */
+    background-color: #ffffff; 
+    color: white; 
+    text-align: center; 
+    padding: 20px;
+    font-size: 18px; 
+}
+
+.cor{
+    margin-left: 85%;
 }
