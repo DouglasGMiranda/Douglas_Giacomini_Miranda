@@ -5,14 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styleSecundario.css">
     <link rel="stylesheet" href="style.css">
-    <title>Home</title>
+    <style>
+        body {
+            background-color: #f0f0f0;
+            color: black;
+            transition: background-color 0.5s ease, color 0.5s ease; 
+        }
+        .cor{
+            color: white;
+        }
+        body.dark-theme {
+            background-color: black;
+            color: white;
+        }
+        </style>
 </head>
 <body>
 </head>
 
 <body>
+    <button id="botaoAlternarEstilo" class="cor">Alternar Tema</button>
     <section>
-        <h1>Home</h1>
         <nav>
             <a href="./index.html">Cadastro</a> |
             <a href="./home.html">Home</a> |
@@ -50,6 +63,18 @@
         <p>Email: contato@lojadecamisetas.com</p>
         <p>Telefone: (11) 1234-5678</p>
     </div>
-</body>
+    <script>
+    const botao = document.getElementById('botaoAlternarEstilo');
 
+    const elementosParaAlterarEstilo = [document.body];
+
+    function alternarEstilo(elemento) {
+        elemento.classList.toggle('dark-theme');
+    }
+
+    botao.addEventListener('click', function() {
+        elementosParaAlterarEstilo.forEach(alternarEstilo);
+    });
+    </script>
+</body>
 </html>
